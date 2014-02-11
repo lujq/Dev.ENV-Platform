@@ -1,0 +1,72 @@
+#!/bin/bash
+# php-fpm startup script for the php-fpm 
+# php-fpm version:5.5.0-alpha6
+# chkconfig: - 85 15
+# description: php-fpm is very good
+# processname: php-fpm
+# pidfile: /var/run/php-fpm.pid
+# config: /usr/local/php/etc/php-fpm.conf
+  
+phpd=/opt/webserver/php/sbin/php-fpm
+php_config=/opt/webserver/php/etc/php-fpm.conf
+php_pid=/var/run/php-fpm.pid
+RETVAL=0
+prog="php-fpm"
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+  
+#start function  
+start(){
+    if [ -e $php_pid  ]
+    then
+        echo "php-fpm already start..."
+        exit 1
+    fi
+        echo -n $"Starting $prog: "
+        daemon $phpd
+}
+  
+stop(){
+    if [ -e $php_pid ]
+    then
+        parent_pid=`cat $php_pid`
+  #      all_pid=`ps -ef | grep php-fpm | awk '{if('$parent_pid' == $3){print $2}}'`
+  #  for pid in $all_pid
+  #  do
+  #          kill $pid
+  #      done
+        echo -n $"Stopping $prog: "
+        kill -INT $parent_pid
+    fi
+    exit 1
+}
+  
+reload(){
+    echo -n $"Reloading $prog: "
+    kill -USR2 `cat $php_pid`
+    RETVAL=$?
+    echo
+    
+}
+  
+# See how we were called.
+case "$1" in
+start)
+        start
+        ;;
+stop)
+        stop
+        ;;
+reload)
+        reload
+        ;;
+status)
+        status $prog
+        RETVAL=$?
+        ;;
+*)
+        echo $"Usage: $prog {start|stop|reload|status}"
+        exit 1
+esac
+exit $RETVAL
