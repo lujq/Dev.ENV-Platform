@@ -1,0 +1,9 @@
+[Info]
+
+[Arch. of the Project]
+/Github	-- Local Sync Repo
+	| -- /Dev.ENV-Platform -- Project
+			| -- /Dev.vagrant -- vagrant Dir.
+					| -- /boxes -- VirtualBox Mirror ISO Packages | Never Sync
+					| -- /dev -- Development Dir.
+			| -- /VM_CentOS6x_x64 -- CentOS Installation Bash Files
